@@ -1,10 +1,15 @@
-import openwakeword
 from openwakeword.model import Model
 import pyaudio
 import numpy as np
 from pathlib import Path
+from agent import run_agent
+from tts import speak
+from stt import transcribe
+from record import record
+from playsound3 import playsound
 
-model = Model(wakeword_model_paths=[str(Path(__file__).parent.parent / "hey_nova_20261027_035353.onnx")], vad_threshold=0.5)
+
+model = Model(wakeword_model_paths=[str(Path(__file__).parent.parent / "models" / "hey_nova_20261027_035353.onnx")], vad_threshold=0.5)
 
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
@@ -31,6 +36,20 @@ try:
         for name, confidence in prediction.items():
             if confidence >= 0.6:
                 print(f"Wake word detected: {name}")
+
+                playsound(str(Path(__file__).parent.parent / "fxs" / "started.wav"),block=False)
+
+                record("/tmp/nova_output.wav")
+
+                playsound(str(Path(__file__).parent.parent / "fxs" / "stopped.wav"))
+
+                text = transcribe("/tmp/nova_output.wav")
+
+                print(text)
+                response = run_agent(text)
+                speak(response)
+                print(response)
+                
                 model.reset()
             
 except KeyboardInterrupt:

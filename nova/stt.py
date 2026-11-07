@@ -1,19 +1,16 @@
-from faster_whisper import WhisperModel
+import torch
+from transformers import pipeline
 
 print("Loading Whisper...")
 
-model = WhisperModel(
-    "small",
-    device="cuda",
-    compute_type="float16",
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+transcriber = pipeline(
+    "automatic-speech-recognition",
+    model="openai/whisper-base.en",
+    device=device,
 )
 
-def transcribe(audio):
-    segments, info = model.transcribe(
-        audio,
-        beam_size=5,
-    )
-
-    text = " ".join(segment.text for segment in segments)
-
-    return text.strip()
+def transcribe(audio_file):
+    result = transcriber(audio_file)
+    return result["text"].strip()

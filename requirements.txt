@@ -1,3 +1,13 @@
 numpy==2.5.4
+ollama==0.6.3
 openwakeword==0.4.0
 pyaudio==0.2.14
+ytmusicapi==1.12.3
+sounddevice
+piper_tts==1.8.0
+playsound3==3.3.2
+scipy==1.18.1
+torch==2.15.0
+transformers==5.22.1
+playsound3==3.3.2
+playsound3==3.3.2
