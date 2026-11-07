@@ -11,3 +11,5 @@ torch==2.15.0
 transformers==5.22.1
 playsound3==3.3.2
 playsound3==3.3.2
+playsound3==3.3.2
+python_mpv_jsonipc==1.5.0

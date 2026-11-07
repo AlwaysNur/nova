@@ -16,6 +16,7 @@ def play_song(video_id: str):
 
     process = subprocess.Popen([
         "mpv",
+        "--input-ipc-server=" + "/tmp/nova-mpv-socket",
         "--no-video",
         "--really-quiet",
         "--no-terminal",

@@ -7,6 +7,8 @@ from tts import speak
 from stt import transcribe
 from record import record
 from playsound3 import playsound
+from python_mpv_jsonipc import MPV
+
 
 
 model = Model(wakeword_model_paths=[str(Path(__file__).parent.parent / "models" / "hey_nova_20261027_035353.onnx")], vad_threshold=0.5)
@@ -38,6 +40,11 @@ try:
                 print(f"Wake word detected: {name}")
 
                 playsound(str(Path(__file__).parent.parent / "fxs" / "started.wav"),block=False)
+                try:
+                    mpv = MPV(start_mpv=False, ipc_socket="/tmp/nova-mpv-socket")
+                    mpv.mute = True
+                except Exception as e:
+                    print(f"An error occured! {e}")
 
                 record("/tmp/nova_output.wav")
 
@@ -50,6 +57,11 @@ try:
                 speak(response)
                 print(response)
                 
+                try:
+                    mpv.mute = False
+                except Exception as e:
+                    print(f"An error occured! {e}")
+
                 model.reset()
             
 except KeyboardInterrupt:
