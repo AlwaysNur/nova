@@ -37,30 +37,30 @@ try:
         
         for name, confidence in prediction.items():
             if confidence >= 0.6:
-                print(f"Wake word detected: {name}")
+                print(f"Wake word detected: {name}, {confidence}")
 
                 playsound(str(Path(__file__).parent.parent / "fxs" / "started.wav"),block=False)
                 try:
                     mpv = MPV(start_mpv=False, ipc_socket="/tmp/nova-mpv-socket")
                     mpv.mute = True
                 except Exception as e:
-                    print(f"An error occured! {e}")
+                    pass
 
                 record("/tmp/nova_output.wav")
 
                 playsound(str(Path(__file__).parent.parent / "fxs" / "stopped.wav"))
 
                 text = transcribe("/tmp/nova_output.wav")
-
+                
                 print(text)
                 response = run_agent(text)
                 speak(response)
                 print(response)
-                
+
                 try:
                     mpv.mute = False
                 except Exception as e:
-                    print(f"An error occured! {e}")
+                    pass
 
                 model.reset()
             

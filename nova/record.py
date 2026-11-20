@@ -9,8 +9,8 @@ RATE = 16000
 CHUNK = 1024
 
 SILENCE_THRESHOLD = 500
-SILENCE_DURATION = 1.5
-
+SILENCE_DURATION = 2.5
+NO_SPEECH_TIMEOUT = 2
 
 def record(file):
     OUTPUT_FILENAME = file
@@ -28,8 +28,9 @@ def record(file):
     silence_start_time = None
 
     try:
-        while True:
+        start_time = time.time()
 
+        while True:
             data = stream.read(CHUNK, exception_on_overflow=False)
             frames.append(data)
 
@@ -40,6 +41,9 @@ def record(file):
             if not has_started_talking:
                 if max_amplitude > SILENCE_THRESHOLD:
                     has_started_talking = True
+                elif time.time() - start_time >= NO_SPEECH_TIMEOUT:
+                    print(f"No speech detected for {NO_SPEECH_TIMEOUT} seconds.")
+                    break
                 continue
 
             # Phase 2: Speaker is talking; look for the end of speech

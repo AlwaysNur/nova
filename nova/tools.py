@@ -1,4 +1,4 @@
-from skills import music, volume, time
+from skills import music, volume, time, github, weather, parcels
 
 player = None
 
@@ -92,6 +92,54 @@ TOOLS = [
                 "required": []
             }
         }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "current_date",
+            "description": "Get the current date.",
+            "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "github_notification",
+            "description": "Gets Github notifications.",
+            "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": []
+            }
+        }
+    },
+        {
+        "type": "function",
+        "function": {
+            "name": "weather",
+            "description": "Gets the weather for the region.",
+            "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": []
+            }
+        }
+    },
+        {
+        "type": "function",
+        "function": {
+            "name": "get_parcels",
+            "description": "Gets current parcels to track.",
+            "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": []
+            }
+        }
     }
 ]
 
@@ -101,7 +149,11 @@ def execute_tool(name, arguments):
         "play_music": play_music,
         "stop_music": stop_music,
         "set_volume": volume.set_volume,
-        "current_time": time.current_time
+        "current_time": time.current_time,
+        "current_date": time.current_date,
+        "github_notification": github.github_notifications,
+        "weather": weather.weather,
+        "get_parcels": parcels.get_parcels
     }
 
     if name not in available_tools:
